@@ -18,18 +18,38 @@ spec:
         ports:
         - containerPort: 3000
         livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-            httpHeaders:
-            - name: Custom-Header
-              value: Awesome
-          initialDelaySeconds: 3 # Número de segundos após o início do container para o liveness
-          periodSeconds: 10 # Intervalo de tempo entre as verificações
-          failureThreshold: 3 # Número de falhas pra considerar a aplicação não saudável
-          successThreshold: 1 # Número de sucessos para zerar o failureThreshold (No liveness é 1)
-          timeoutSeconds: 3 # Timeout da chamada
-terminationGracePeriodSeconds: 30
+
+      # Liveness Probe com HTTP - Esta configuração é usada para verificar se a aplicação está viva, ou seja, se está funcionando corretamente.
+        # httpGet:  # Define que a verificação de liveness será feita via requisição HTTP.
+          # path: /health  # Caminho onde o serviço será consultado para verificar o estado de saúde. Neste caso, o endpoint "/health".
+          # port: 3000  # Porta onde o serviço está sendo executado e será acessada para a verificação.
+          # httpHeaders:  # Seção opcional para adicionar cabeçalhos HTTP personalizados à requisição.
+          # - name: Custom-Header  # Nome do cabeçalho HTTP a ser enviado.
+          #   value: Awesome  # Valor do cabeçalho HTTP. Neste exemplo, o cabeçalho é chamado "Custom-Header" e o valor é "Awesome"
+
+
+      # Liveness Probe com EXEC - Esta configuração verifica se a aplicação está viva usando um comando executado dentro do container.
+        # exec:  # Define que a verificação de liveness será feita por meio da execução de um comando no container.
+          # command:  # O comando que será executado para verificar se o container está vivo.
+            # - cat  # O comando que será executado (neste caso, o comando `cat`).
+            # - /tmp/health  # O argumento passado ao comando `cat`, que é um arquivo no caminho `/tmp/health`. Se o arquivo não existir ou não puder ser lido, a verificação falhará.
+
+                  # Liveness Probe com TCP Socket
+# Esta configuração verifica se a aplicação está viva, verificando se a porta TCP está aberta e ouvindo.
+
+          tcpSocket:  # Define que a verificação de liveness será feita por meio de uma conexão TCP.
+            port: 8080  # A porta onde a aplicação deve estar ouvindo. Neste exemplo, estamos verificando a porta 8080.
+
+        # Configurações de tempo e condições para a Liveness Probe
+          initialDelaySeconds: 3  # Tempo em segundos após o container ser iniciado antes de começar a verificar a saúde. Neste caso, 3 segundos após o início.
+          periodSeconds: 10  # Intervalo entre as verificações subsequentes. Neste exemplo, a verificação ocorrerá a cada 10 segundos.
+          failureThreshold: 3  # Número de falhas consecutivas que precisam ocorrer antes de considerar o container como "não saudável". Aqui, são 3 falhas consecutivas.
+          successThreshold: 1  # Número de sucessos consecutivos necessários para que o container seja considerado "saudável" após falhas. No caso, é 1 sucesso para ser considerado saudável novamente.
+          timeoutSeconds: 3  # Tempo máximo que a execução do comando pode durar. Se o comando não for concluído dentro de 3 segundos, será considerado uma falha.
+
+          # Configuração de término do pod
+terminatio          nGracePeriodSeconds: 30  # Tempo de espera após o sinal de término (SIGTERM) até o container ser forçado a parar. Aqui, é dado um período de 30 segundos para o container se encerrar de forma graciosa.
+
 ---
 apiVersion: v1
 kind: Service
@@ -45,3 +65,7 @@ spec:
     name: http
     protocol: TCP
     nodePort: 32000
+
+
+
+  
