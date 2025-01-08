@@ -1,8 +1,4 @@
-Aqui está o documento atualizado, com a **`startupProbe`** adicionada nas configurações de probes, conforme solicitado:
-
----
-
-# Documentação Completa - **Simulador do Caos** no Kubernetes com Liveness, Readiness e Startup Probes
+# Documentação Completa - **Simulador do Caos** no Kubernetes com Startup Probe, Liveness Probe e Readiness Probe
 
 Este repositório contém a configuração necessária para o deployment do **Simulador do Caos** em um cluster Kubernetes. A configuração inclui tanto o **Deployment** quanto o **Service** para garantir a execução e acessibilidade da aplicação, além de implementar as **probes de liveness**, **readiness** e **startup** para monitoramento contínuo da saúde, prontidão e tempo de inicialização do serviço.
 
