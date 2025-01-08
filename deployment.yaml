@@ -48,13 +48,22 @@ spec:
 
 
           readinessProbe:
-            httpGet:
-              path: /ready
-              port: 3000
-              httpHeaders:
-                - name: token
+            httpGet: # Verificação de prontidão via requisição HTTP GET
+              path: /ready # Caminho da URL que será acessada para verificar a prontidão do contêiner
+              port: 3000 # Porta na qual o contêiner está escutando para a requisição HTTP GET
+              httpHeaders: # Cabeçalhos HTTP adicionais que serão enviados na requisição
+                - name: token # Definição do cabeçalho 'token' com o valor 'qualquer'
                   value: qualquer
-                  
+
+            exec: # Verificação de prontidão via execução de comando no contêiner
+              command: # Comando que será executado para verificar a prontidão do contêiner
+                - cat # O comando 'cat' será executado no contêiner
+                - /tmp/ready # Caminho do arquivo que será lido para indicar prontidão
+
+            tcpSocket: # Verificação de prontidão via conexão TCP
+              port: 8080 # Porta TCP que será usada para testar a conectividade do contêiner
+
+            
         # Configurações de tempo e condições para a Liveness Probe
             initialDelaySeconds: 3  # Tempo em segundos após o container ser iniciado antes de começar a verificar a saúde. Neste caso, 3 segundos após o início.
             periodSeconds: 10  # Intervalo entre as verificações subsequentes. Neste exemplo, a verificação ocorrerá a cada 10 segundos.
