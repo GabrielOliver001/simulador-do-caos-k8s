@@ -17,6 +17,28 @@ spec:
           image: gabrieloliver001/simulador-do-caos:v1
           ports:
           - containerPort: 3000
+          startupProbe:   # Verificação de inicialização do contêiner (startupProbe) para garantir que o contêiner foi iniciado corretamente e está pronto para receber tráfego.
+            httpGet: # Opção 1: Verificação via requisição HTTP GET
+              path: /health # Caminho para o endpoint de saúde do contêiner
+              port: 3000 # Porta na qual o contêiner está ouvindo para requisições HTTP
+
+            #exec: # Opção 2: Verificação via execução de comando no contêiner
+              #command:  # Comando a ser executado dentro do contêiner para verificar sua prontidão
+                #- cat  # Comando para ler o conteúdo de um arquivo
+                #- /tmp/health # O arquivo de verificação dentro do contêiner que indica que ele está pronto
+
+            # tcpSocket: Opção 3: Verificação via conexão TCP
+              # port: 8080 # Porta na qual o contêiner deve estar aceitando conexões TCP
+
+            
+              
+      # Configurações de tempo e condições para a Startup Probe
+            initialDelaySeconds: 3  # Tempo em segundos após o container ser iniciado antes de começar a verificar a saúde. Neste caso, 3 segundos após o início.
+            periodSeconds: 10  # Intervalo entre as verificações subsequentes. Neste exemplo, a verificação ocorrerá a cada 10 segundos.
+            failureThreshold: 3  # Número de falhas consecutivas que precisam ocorrer antes de considerar o container como "não saudável". Aqui, são 3 falhas consecutivas.
+            successThreshold: 1  # Número de sucessos consecutivos necessários para que o container seja considerado "saudável" após falhas. No caso, é 1 sucesso para ser considerado saudável novamente.
+            timeoutSeconds: 3  # Tempo máximo que a execução do comando pode durar. Se o comando não for concluído dentro de 3 segundos, será considerado uma falha.
+
           livenessProbe:
       # Liveness Probe com HTTP - Esta configuração é usada para verificar se a aplicação está viva, ou seja, se está funcionando corretamente.
             httpGet:  # Define que a verificação de liveness será feita via requisição HTTP.
@@ -55,13 +77,13 @@ spec:
                 - name: token # Definição do cabeçalho 'token' com o valor 'qualquer'
                   value: qualquer
 
-            exec: # Verificação de prontidão via execução de comando no contêiner
-              command: # Comando que será executado para verificar a prontidão do contêiner
-                - cat # O comando 'cat' será executado no contêiner
-                - /tmp/ready # Caminho do arquivo que será lido para indicar prontidão
+            #exec: # Verificação de prontidão via execução de comando no contêiner
+              #command: # Comando que será executado para verificar a prontidão do contêiner
+                #- cat # O comando 'cat' será executado no contêiner
+                #- /tmp/ready # Caminho do arquivo que será lido para indicar prontidão
 
-            tcpSocket: # Verificação de prontidão via conexão TCP
-              port: 8080 # Porta TCP que será usada para testar a conectividade do contêiner
+            #tcpSocket: # Verificação de prontidão via conexão TCP
+              #port: 8080 # Porta TCP que será usada para testar a conectividade do contêiner
 
             
         # Configurações de tempo e condições para a Liveness Probe
