@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Minha primeira ação"
-        run: echo: "Hello World"
+        run: echo "Hello World"
       - name: "Segunda Ação"
         run: |
-          echo: "Segunda Ação"
-          echo: "Terceira Ação"
+          echo "Segunda Ação"
+          echo "Terceira Ação"
       
