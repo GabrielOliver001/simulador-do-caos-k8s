@@ -16,7 +16,7 @@ jobs:
           echo "Segunda ação"
           echo "Terceira ação"
       - name: "Quarta ação"
-        run: print("Ação com Python)
+        run: print("Ação com Python")
         shell: python
     
   
