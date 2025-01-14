@@ -17,6 +17,7 @@ jobs:
           echo "Terceira ação"
   segundo-job:
     name: "Usando Action do Node"
+    needs: [primeiro-job]
     runs-on: ubuntu-latest
     steps:
       - name: "Verificando a versão default"
