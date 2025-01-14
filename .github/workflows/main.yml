@@ -15,8 +15,18 @@ jobs:
         run: |
           echo "Segunda ação"
           echo "Terceira ação"
-      - name: "Quarta ação"
-        run: print("Ação com Python")
-        shell: python
-    
+  segundo-job:
+    name: "Usando Action do Node"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Verificando a versão default"
+        run: node --version
+      - name: "Ambiente de Node Atualizado" 
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: "22.13.0"
+      - name: "Verificando a nova versão"
+        run: node --version
+          
+      
   
